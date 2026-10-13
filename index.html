@@ -105,7 +105,70 @@
 
     <div class="divider"></div>
 
-    <p class="note">EEN PERSOONLIJKE UITNODIGING</p>
+<div id="toegang">
+  <p class="note">TOEGANG TOT JOUW UITNODIGING</p>
+
+  <p>Vul hieronder jouw persoonlijke toegangscode in.</p>
+
+  <input
+    type="text"
+    id="toegangscode"
+    placeholder="Persoonlijke toegangscode"
+    autocomplete="off"
+    style="
+      width: 100%;
+      max-width: 320px;
+      padding: 14px;
+      margin: 12px 0;
+      background: #171717;
+      color: #f5f0e5;
+      border: 1px solid #b99a56;
+      border-radius: 4px;
+      text-align: center;
+      font-size: 16px;
+    "
+  >
+
+  <br>
+
+  <button
+    type="button"
+    onclick="controleerCode()"
+    style="
+      padding: 14px 32px;
+      margin-top: 12px;
+      background: #b99a56;
+      color: #111;
+      border: none;
+      border-radius: 4px;
+      font-size: 14px;
+      font-weight: bold;
+      cursor: pointer;
+    "
+  >
+    Open mijn uitnodiging
+  </button>
+
+  <p id="melding" aria-live="polite"></p>
+</div>
+
+<script>
+  function controleerCode() {
+    const code = document
+      .getElementById("toegangscode")
+      .value
+      .trim();
+
+    const melding = document.getElementById("melding");
+
+    if (code === "") {
+      melding.textContent = "Vul eerst je persoonlijke toegangscode in.";
+    } else {
+      melding.textContent =
+        "De codecontrole wordt in de volgende stap toegevoegd.";
+    }
+  }
+</script>
   </main>
 </body>
 </html>
