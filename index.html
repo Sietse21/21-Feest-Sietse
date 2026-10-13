@@ -161,12 +161,15 @@
 
     const melding = document.getElementById("melding");
 
-    if (code === "") {
-      melding.textContent = "Vul eerst je persoonlijke toegangscode in.";
-    } else {
-      melding.textContent =
-        "De codecontrole wordt in de volgende stap toegevoegd.";
-    }
+if (code === "") {
+  melding.textContent = "Vul eerst je persoonlijke toegangscode in.";
+} else if (code.toLowerCase() === "sietse-test") {
+  melding.textContent = "Toegangscode herkend! Welkom bij 21-Diner Sietse.";
+  melding.style.color = "#d6b875";
+} else {
+  melding.textContent = "Deze toegangscode is niet herkend. Probeer het opnieuw.";
+  melding.style.color = "#e6a6a6";
+}
   }
 </script>
   </main>
