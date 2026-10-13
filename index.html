@@ -150,6 +150,43 @@
   </button>
 
   <p id="melding" aria-live="polite"></p>
+  <div id="vraagVak" style="display: none;">
+  <div class="divider"></div>
+
+  <p>
+    Deze uitnodiging bevat informatie die alleen voor jou bedoeld is.
+  </p>
+
+  <p>
+    Om te controleren dat de brief daadwerkelijk door de juiste persoon
+    is geopend, vragen we je eerst onderstaande vraag te beantwoorden.
+  </p>
+
+  <p>
+    Zodra je het juiste antwoord hebt gegeven, wordt de uitnodiging zichtbaar.
+  </p>
+
+  <h2 id="persoonlijkeVraag" style="color: #d6b875;"></h2>
+
+  <input
+    type="text"
+    id="persoonlijkAntwoord"
+    placeholder="Jouw antwoord"
+    style="
+      width: 100%;
+      max-width: 320px;
+      padding: 14px;
+      background: #171717;
+      color: #f5f0e5;
+      border: 1px solid #b99a56;
+      border-radius: 4px;
+      text-align: center;
+      font-size: 16px;
+    "
+  >
+
+  <p id="antwoordMelding" aria-live="polite"></p>
+</div>
 </div>
 
 <script>
