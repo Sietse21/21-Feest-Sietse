@@ -153,6 +153,32 @@
 </div>
 
 <script>
+  const gasten = {
+  "JOC-7K4P": { naam: "Jochem", type: "diner" },
+  "NAT-9R2M": { naam: "Nathan", type: "diner" },
+  "SEB-5X8L": { naam: "Sebastiaan", type: "diner" },
+  "GEE-3V6Q": { naam: "Geerten", type: "diner" },
+  "GIJ-8N2W": { naam: "Gijs", type: "diner" },
+  "JEL-4T9B": { naam: "Jelmer", type: "diner" },
+  "ARO-6H3Y": { naam: "Aron", type: "diner" },
+  "MER-2P7F": { naam: "Merel", type: "diner" },
+  "ELI-9C5K": { naam: "Eline", type: "diner" },
+  "SUZ-7M4D": { naam: "Suzanne", type: "diner" },
+  "CAS-3L8R": { naam: "Casper", type: "diner" },
+  "JOR-5Q2N": { naam: "Jorit", type: "diner" },
+  "KAS-8F6T": { naam: "Kasper", type: "diner" },
+  "WOU-4B9X": { naam: "Wout", type: "diner" },
+
+  "JOR-6P3K": { naam: "Jor", type: "feest" },
+  "STA-9W5H": { naam: "Stan", type: "feest" },
+  "JAS-2T7M": { naam: "Jasper", type: "feest" },
+  "JAS-8R4V": { naam: "Jasper", type: "feest" },
+  "LOR-5N9C": { naam: "Lorens", type: "feest" },
+  "BAU-3X6F": { naam: "Bauke", type: "feest" },
+  "DAP-7K2Q": { naam: "Daniel", type: "feest" },
+  "DAS-4M8Y": { naam: "Daniel", type: "feest" },
+  "FRE-9L5B": { naam: "Frédèrique", type: "feest" }
+};
   function controleerCode() {
     const code = document
       .getElementById("toegangscode")
@@ -163,8 +189,9 @@
 
 if (code === "") {
   melding.textContent = "Vul eerst je persoonlijke toegangscode in.";
-} else if (code.toLowerCase() === "sietse-test") {
-  melding.textContent = "Toegangscode herkend! Welkom bij 21-Diner Sietse.";
+} else if (gasten[code.toUpperCase()]) {
+  const gast = gasten[code.toUpperCase()];
+  melding.textContent = "Welkom " + gast.naam + "! Je persoonlijke code is herkend.";
   melding.style.color = "#d6b875";
 } else {
   melding.textContent = "Deze toegangscode is niet herkend. Probeer het opnieuw.";
