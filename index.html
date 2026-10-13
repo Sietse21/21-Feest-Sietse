@@ -228,8 +228,13 @@ if (code === "") {
   melding.textContent = "Vul eerst je persoonlijke toegangscode in.";
 } else if (gasten[code.toUpperCase()]) {
   const gast = gasten[code.toUpperCase()];
-  melding.textContent = "Welkom " + gast.naam + "! Je persoonlijke code is herkend.";
+
+  melding.textContent = "Welkom " + gast.naam + "!";
   melding.style.color = "#d6b875";
+
+  document.getElementById("vraagVak").style.display = "block";
+  document.getElementById("persoonlijkeVraag").textContent =
+    "Wat is het antwoord op jouw persoonlijke vraag?";
 } else {
   melding.textContent = "Deze toegangscode is niet herkend. Probeer het opnieuw.";
   melding.style.color = "#e6a6a6";
