@@ -10,12 +10,14 @@
 </head>
 <body>
 <main class="container">
-<div class="eyebrow">Een bijzondere gelegenheid</div>
+<div class="eyebrow" id="bovenTitel">Een bijzondere gelegenheid</div>
 <h1>21-Diner Sietse</h1>
 <div class="divider"></div>
+<div id="welkomstTekst">
 <p class="intro">Je bent persoonlijk uitgenodigd.</p>
 <p>Sommige momenten zijn te bijzonder om zomaar voorbij te laten gaan. Daarom nodig ik je uit om samen een bijzondere avond te vieren.</p>
 <div class="divider"></div>
+</div>
 <div id="toegang">
 <p class="note">TOEGANG TOT JOUW UITNODIGING</p>
 <p>Vul hieronder jouw persoonlijke toegangscode in.</p>
@@ -79,13 +81,20 @@ function normaliseerAntwoord(tekst) {
 
 let actieveCode = null;
 
+function toonScherm(id) {
+  ["toegang", "vraagVak", "uitnodigingVak"].forEach(scherm => {
+    document.getElementById(scherm).style.display = scherm === id ? "block" : "none";
+  });
+  document.getElementById("welkomstTekst").style.display = id === "toegang" ? "block" : "none";
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
 function controleerCode() {
   const code = document.getElementById("toegangscode").value.trim().toUpperCase();
   const melding = document.getElementById("melding");
   const vraagVak = document.getElementById("vraagVak");
 
-  document.getElementById("uitnodigingVak").style.display = "none";
-  vraagVak.style.display = "none";
+  toonScherm("toegang");
   actieveCode = null;
 
   if (!code) {
@@ -102,16 +111,13 @@ function controleerCode() {
 
   actieveCode = code;
 
-  document.getElementById("toegang").style.display = "none";
-
   document.getElementById("persoonlijkeVraag").textContent =
     persoonlijkeVragen[code].vraag;
 
   document.getElementById("persoonlijkAntwoord").value = "";
   document.getElementById("antwoordMelding").textContent = "";
 
-  document.getElementById("toegang").style.display = "none";
-  vraagVak.style.display = "block";
+  toonScherm("vraagVak");
 }
 
 function controleerAntwoord() {
@@ -126,10 +132,7 @@ function controleerAntwoord() {
     melding.style.color = "#e6a6a6";
     return;
   }
-  melding.textContent = "Antwoord correct!";
-  melding.style.color = "#d6b875";
-  document.getElementById("vraagVak").style.display = "none";
-  document.getElementById("uitnodigingVak").style.display = "block";
+  toonScherm("uitnodigingVak");
   document.getElementById("uitnodigingNaam").textContent = gasten[actieveCode].naam;
   document.getElementById("uitnodigingSoort").textContent = gasten[actieveCode].type === "diner" ? "Je bent uitgenodigd voor het diner" : "Je bent uitgenodigd voor het feest";
 }
