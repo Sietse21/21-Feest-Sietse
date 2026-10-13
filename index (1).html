@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>21-Diner Sietse</title>
+<style>
+*{box-sizing:border-box}body{margin:0;min-height:100vh;font-family:Georgia,"Times New Roman",serif;background:radial-gradient(ellipse at top,#302719 0%,#121212 55%,#080808 100%);color:#f5f0e5;display:flex;justify-content:center;align-items:center;padding:24px}.container{width:100%;max-width:650px;padding:42px 28px;border:1px solid #b99a56;border-radius:8px;background:rgba(12,12,12,.92);box-shadow:0 0 40px rgba(185,154,86,.12);text-align:center}.eyebrow{color:#c9aa68;text-transform:uppercase;letter-spacing:5px;font-family:Arial,sans-serif;font-size:11px}h1{color:#d6b875;font-size:clamp(36px,8vw,54px);font-weight:normal;margin:22px 0 10px}.divider{width:70px;height:1px;background:#b99a56;margin:26px auto}p{line-height:1.8;color:#ded8cc}.intro{font-size:18px}.note{margin-top:30px;color:#b99a56;font-family:Arial,sans-serif;font-size:12px;letter-spacing:1px}input{width:100%;max-width:320px;padding:14px;margin:12px 0;background:#171717;color:#f5f0e5;border:1px solid #b99a56;border-radius:4px;text-align:center;font-size:16px}button{padding:14px 32px;margin-top:12px;background:#b99a56;color:#111;border:none;border-radius:4px;font-size:14px;font-weight:bold;cursor:pointer}h2{color:#d6b875;font-size:22px;font-weight:normal;line-height:1.5}@media(max-width:480px){.container{padding:34px 20px}.eyebrow{letter-spacing:3px}}
+</style>
+</head>
+<body>
+<main class="container">
+<div class="eyebrow">Een bijzondere gelegenheid</div>
+<h1>21-Diner Sietse</h1>
+<div class="divider"></div>
+<p class="intro">Je bent persoonlijk uitgenodigd.</p>
+<p>Sommige momenten zijn te bijzonder om zomaar voorbij te laten gaan. Daarom nodig ik je uit om samen een bijzondere avond te vieren.</p>
+<div class="divider"></div>
+<div id="toegang">
+<p class="note">TOEGANG TOT JOUW UITNODIGING</p>
+<p>Vul hieronder jouw persoonlijke toegangscode in.</p>
+<input type="text" id="toegangscode" placeholder="Persoonlijke toegangscode" autocomplete="off">
+<div><button type="button" onclick="controleerCode()">Open mijn uitnodiging</button></div>
+<p id="melding" aria-live="polite"></p>
+</div>
+<div id="vraagVak" style="display:none">
+<div class="divider"></div>
+<p>Deze uitnodiging bevat informatie die alleen voor jou bedoeld is.</p>
+<p>Om te controleren dat de brief daadwerkelijk door de juiste persoon is geopend, vragen we je eerst onderstaande vraag te beantwoorden.</p>
+<p>Zodra je het juiste antwoord hebt gegeven, wordt de uitnodiging zichtbaar.</p>
+<h2 id="persoonlijkeVraag"></h2>
+<input type="text" id="persoonlijkAntwoord" placeholder="Jouw antwoord" autocomplete="off">
+<div><button type="button" onclick="controleerAntwoord()">Controleer antwoord</button></div>
+<p id="antwoordMelding" aria-live="polite"></p>
+</div>
+<div id="uitnodigingVak" style="display:none">
+<div class="divider"></div>
+<p class="eyebrow">Persoonlijke uitnodiging</p>
+<h2>Beste <span id="uitnodigingNaam"></span>,</h2>
+<p id="uitnodigingSoort"></p>
+<p>Dresscode: Party chic</p>
+<p class="note">De definitieve uitnodigingstekst voegen we later toe.</p>
+</div>
+</main>
+<script>
+const gasten = {
+"JOC-7K4P":{naam:"Jochem",type:"diner"},"NAT-9R2M":{naam:"Nathan",type:"diner"},"SEB-5X8L":{naam:"Sebastiaan",type:"diner"},"GEE-3V6Q":{naam:"Geerten",type:"diner"},"GIJ-8N2W":{naam:"Gijs",type:"diner"},"JEL-4T9B":{naam:"Jelmer",type:"diner"},"ARO-6H3Y":{naam:"Aron",type:"diner"},"MER-2P7F":{naam:"Merel",type:"diner"},"ELI-9C5K":{naam:"Eline",type:"diner"},"SUZ-7M4D":{naam:"Suzanne",type:"diner"},"CAS-3L8R":{naam:"Casper",type:"diner"},"JOR-5Q2N":{naam:"Jorit",type:"diner"},"KAS-8F6T":{naam:"Kasper",type:"diner"},"WOU-4B9X":{naam:"Wout",type:"diner"},
+"JOR-6P3K":{naam:"Jor",type:"feest"},"STA-9W5H":{naam:"Stan",type:"feest"},"JAS-2T7M":{naam:"Jasper",type:"feest"},"JAS-8R4V":{naam:"Jasper",type:"feest"},"LOR-5N9C":{naam:"Lorens",type:"feest"},"BAU-3X6F":{naam:"Bauke",type:"feest"},"DAP-7K2Q":{naam:"Daniel",type:"feest"},"DAS-4M8Y":{naam:"Daniel",type:"feest"},"FRE-9L5B":{naam:"Frédèrique",type:"feest"}
+};
+const persoonlijkeVragen = {
+  "JOC-7K4P": { vraag: "Wij hebben bij verschillende bedrijven gewerkt, waaronder het magazijn in Hoevelaken. Hoe heette de Pool waarmee we hebben gewerkt bij Mindray?", antwoorden: ["Simon"] },
+  "NAT-9R2M": { vraag: "Tijdens de coronatijd heb ik mijn verjaardag gevierd samen met jou en Jor. Naast een geldbedrag kreeg ik een tweede cadeau van jou op deze verjaardag. Welk triest tweede cadeau heb je mij gegeven op mijn 15e verjaardag?", antwoorden: ["Patatje", "Patat"] },
+  "SEB-5X8L": { vraag: "Tijdens het etentje bij Heinde besloot jij om een nigiri te verstoppen bij onze tafel. Waarop heeft dit stukje rijst met vis de daaropvolgende maand gelegen?", antwoorden: ["Lamp"] },
+  "GEE-3V6Q": { vraag: "Op de Minecraft-eilandenserver is veel fittie geweest. Mensen werden bedreigd, rechtszaken werden gestart en iemand besloot creative te gebruiken. Voor wie werd de quotemuur gebouwd op deze server?", antwoorden: ["Thijs"] },
+  "GIJ-8N2W": { vraag: "Op de middelbare waren wij de dikzakken. Hierom heb je van mij en Jochem een paar cadeaus ontvangen op je 18e verjaardag (onder andere een roze drankfles). Wat was het thema van deze cadeaus (hint: vlees)?", antwoorden: ["Spek"] },
+  "JEL-4T9B": { vraag: "Buddyyy, de herkomst van deze term is het zomerkamp in Kandersteg. Wat was dat een geweldige tijd. Het woord ‘tijd’ doet mij aan iets anders denken: de any-timer op de boot naar Calais. Welk biermerk was dit koude biertje ook alweer?", antwoorden: ["Heineken"] },
+  "ARO-6H3Y": { vraag: "Wij zijn inmiddels al een tijdje beverleiding. Tijdens afgelopen beverzomerkamp werd er ’s avonds nog wel eens een drankje genuttigd. Een bepaalde avond stond in het teken van een activiteit die jij niet mocht uitvoeren van saaie BOB Jelmer, wat was deze activiteit?", antwoorden: ["Kanoën", "Kanoen"] },
+  "MER-2P7F": { vraag: "Wij zijn sinds kort samen beverleiding. Erg gezellig vind ik zelf, maar voor de officiële ontgroening van het beverteam weigerde jij het welkomstdrankje bij de startvergadering. Welk fantastisch biertje besloot jij niet te drinken tijdens deze vergadering?", antwoorden: ["Klok"] },
+  "ELI-9C5K": { vraag: "Wij zijn inmiddels al een tijdje samen leiding geweest. In deze tijd zijn er verschillende feestjes en partijen geweest, zo ook jouw 21e verjaardag. Daar was de dresscode: jouw favoriete vakantieland. Welk vakantieland vertegenwoordigde ik ook alweer?", antwoorden: ["Zuid-Korea", "Zuid Korea"] },
+  "SUZ-7M4D": { vraag: "Zoals bekend ben jij een grote bierdrinker. Uiteraard hebben wij samen ook heel wat biertjes weggetikt. Niet alleen in de bar van Manitoba of tijdens de proeverijen, maar ook op zomerkampen. In Schotland hebben wij tegenover elkaar gezeten bij het avondeten in een restaurant. Nou ben ik gelicentieerd glazenverzamelaar en heb ik nou net het bierglas van deze avond meegenomen. Welke stadsdeel staat er op dit bierglas?", antwoorden: ["Brooklyn"] },
+  "CAS-3L8R": { vraag: "Wij hebben al een lange tijd iets met verkleden. We zorgen er bij elk feest voor dat we maximaal voldoen aan de dresscode, zo ook op ons samensmeltingsweekend. Naast onze witte outfit, besloten wij ook nog om sloffen te dragen, welke vorm van etenswaar hadden deze sloffen?", antwoorden: ["Hamburger"] },
+  "JOR-5Q2N": { vraag: "Wij hebben in de jaren dat we elkaar kennen veel leuke dingen meegemaakt, de vele barbecues bij Wout, Hamburg, het project in Ommen en natuurlijk de minor psychologie. Wat is ook alweer het favoriete drankje van Pieter?", antwoorden: ["Water"] },
+  "KAS-8F6T": { vraag: "Wij hebben in de jaren dat we elkaar kennen veel leuke dingen meegemaakt, de vele barbecues bij Wout, Hamburg en natuurlijk de Bissinghrun. Hier hebben wij Jorit keihard aangemoedigd. Welke legendarische quote stond er op een van de bordjes?", antwoorden: ["#Letsgo", "Letsgo", "Let's go"] },
+  "WOU-4B9X": { vraag: "Wij hebben veel leuke momenten meegemaakt tijdens de opleiding. Zo zijn we naar Hamburg gereden, hebben we veel gebarbecued en zijn eens naar Walibi geweest. Naast deze mooie avonturen, zijn er ook vele alcoholische avonden geweest. Op een zekere avond heb ik een bierflesje weten te koppen. Wie vond het nodig om mij in de struiken te gooien, waardoor ik de daaropvolgende week met een hechtingpleister heb rond gelopen?", antwoorden: ["Britt"] },
+  "JOR-6P3K": { vraag: "In onze Minecraft-bedrockserver hebben wij de rukbunker gebouwd met daarin een farm. Welke diersoort sneuvelde in deze machine, waardoor er telkens een bel afging in de base?", antwoorden: ["Kip"] },
+  "STA-9W5H": { vraag: "Wij hebben meerdere keren samen gesport en geboulderd. In de vijfde klas hebben wij samen deelgenomen aan een examensport, welke sport was dit?", antwoorden: ["Zwemmen"] },
+  "JAS-2T7M": { vraag: "Wij leerden elkaar kennen in de Fortnite-party met de boys. De tijden zijn veranderd en zijn nogal alcoholistisch geworden. Zo ook op het feestje van Geerten en mij in 2025. Toen besloot jij gebruik te maken van mijn zwakste moment door heel mijn gezicht onder te tekenen. Behalve het n-woord op mijn voorhoofd stond er ook nog een ander symbool op, wat was dit symbool?", antwoorden: ["Hakenkruis"] },
+  "LOR-5N9C": { vraag: "Wij kennen elkaar inmiddels al een tijdje. We hebben al een hoop beleefd, drankavondjes, een tripje Dortmund en natuurlijk al de gamesessies. Een tijdje terug besloten wij weer een keer Minecraft op te starten. In plaats van het leuk te hebben besloten wij te beginnen aan een afschuwelijke bezigheid. Waar hebben wij veel te veel tijd ingestopt tijdens deze sessie?", antwoorden: ["Parkour"] },
+  "BAU-3X6F": { vraag: "Wij hebben samen al een hoop beleeft. We hebben samen veel gelachen, vooral op een bepaald moment. In een jeugdherinnering van mij rolden wij over de vloer van jouw kamer van het lachen, dit door een domme grap van een wolf die iets in zijn hol had. Wat zat er in deze wolf zijn hol?", antwoorden: ["Stok"] },
+  "JAS-8R4V": { vraag: "Wij zijn gedurende onze scoutingtijd op verschillende zomerkampen geweest. Tijdens de heenreis van ons eerste Sherrow-zomerkamp werd er crazy 88 gespeeld in de busjes. Jij mocht de make-up tutorial doen in ons busje, maar van wie leende jij de eyeliner om de tutorial uit te kunnen voeren?", antwoorden: ["Marieke"] },
+  "DAP-7K2Q": { vraag: "Wij zitten al vanaf de bevers bij elkaar in de groep. Wij hebben het eigenlijk altijd met elkaar kunnen vinden, behalve op een bepaald moment. Welk bos-item heb ik een keer op jouw achterhoofd gesmeten bij de welpen, waardoor ik moest rennen voor mijn leven?", antwoorden: ["Dennenappel"] },
+  "DAS-4M8Y": { vraag: "Wij kennen elkaar al een flink tijdje, waardoor wij al een heel aantal weekendjes hebben gehad. Tijdens een Sherrow-weekendje kwam jij er ’s avonds achter dat er iets op jouw broek zat. Dit heb je er met behulp van wc-papier en afwasmiddel afgepoetst, je hebt deze broek vervolgens niet gewisseld. Wat zat er op je broek?", antwoorden: ["Hondenpoep"] },
+  "FRE-9L5B": { vraag: "Wij kennen elkaar inmiddels best een tijdje en het blijkt dat wij toch wel fan zijn van alcohol. Op jouw 18e verjaardag heb ik voor het eerst een shot genomen van een bepaalde drank, welke drank was dit?", antwoorden: ["Wodka"] }
+};
+
+function normaliseerAntwoord(tekst) {
+  return tekst.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]/g, "");
+}
+
+let actieveCode = null;
+
+function controleerCode() {
+  const code = document.getElementById("toegangscode").value.trim().toUpperCase();
+  const melding = document.getElementById("melding");
+  const vraagVak = document.getElementById("vraagVak");
+  document.getElementById("uitnodigingVak").style.display = "none";
+  vraagVak.style.display = "none";
+  actieveCode = null;
+
+  if (!code) {
+    melding.textContent = "Vul eerst je persoonlijke toegangscode in.";
+    melding.style.color = "#e6a6a6";
+    return;
+  }
+  if (!gasten[code] || !persoonlijkeVragen[code]) {
+    melding.textContent = "Deze toegangscode is niet herkend. Probeer het opnieuw.";
+    melding.style.color = "#e6a6a6";
+    return;
+  }
+
+  actieveCode = code;
+  melding.textContent = "Welkom " + gasten[code].naam + "!";
+  melding.style.color = "#d6b875";
+  document.getElementById("persoonlijkeVraag").textContent = persoonlijkeVragen[code].vraag;
+  document.getElementById("persoonlijkAntwoord").value = "";
+  document.getElementById("antwoordMelding").textContent = "";
+  vraagVak.style.display = "block";
+}
+
+function controleerAntwoord() {
+  if (!actieveCode) return;
+  const antwoord = normaliseerAntwoord(document.getElementById("persoonlijkAntwoord").value);
+  const juist = persoonlijkeVragen[actieveCode].antwoorden.some(
+    geldig => normaliseerAntwoord(geldig) === antwoord
+  );
+  const melding = document.getElementById("antwoordMelding");
+  if (!juist) {
+    melding.textContent = "Dat antwoord klopt helaas niet. Probeer het opnieuw.";
+    melding.style.color = "#e6a6a6";
+    return;
+  }
+  melding.textContent = "Antwoord correct!";
+  melding.style.color = "#d6b875";
+  document.getElementById("vraagVak").style.display = "none";
+  document.getElementById("uitnodigingVak").style.display = "block";
+  document.getElementById("uitnodigingNaam").textContent = gasten[actieveCode].naam;
+  document.getElementById("uitnodigingSoort").textContent = gasten[actieveCode].type === "diner" ? "Je bent uitgenodigd voor het diner" : "Je bent uitgenodigd voor het feest";
+}
+</script>
+</body>
+</html>
