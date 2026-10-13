@@ -83,6 +83,7 @@ function controleerCode() {
   const code = document.getElementById("toegangscode").value.trim().toUpperCase();
   const melding = document.getElementById("melding");
   const vraagVak = document.getElementById("vraagVak");
+
   document.getElementById("uitnodigingVak").style.display = "none";
   vraagVak.style.display = "none";
   actieveCode = null;
@@ -92,6 +93,7 @@ function controleerCode() {
     melding.style.color = "#e6a6a6";
     return;
   }
+
   if (!gasten[code] || !persoonlijkeVragen[code]) {
     melding.textContent = "Deze toegangscode is niet herkend. Probeer het opnieuw.";
     melding.style.color = "#e6a6a6";
@@ -99,11 +101,16 @@ function controleerCode() {
   }
 
   actieveCode = code;
-  melding.textContent = "Welkom " + gasten[code].naam + "!";
-  melding.style.color = "#d6b875";
-  document.getElementById("persoonlijkeVraag").textContent = persoonlijkeVragen[code].vraag;
+
+  document.getElementById("toegang").style.display = "none";
+
+  document.getElementById("persoonlijkeVraag").textContent =
+    persoonlijkeVragen[code].vraag;
+
   document.getElementById("persoonlijkAntwoord").value = "";
   document.getElementById("antwoordMelding").textContent = "";
+
+  document.getElementById("toegang").style.display = "none";
   vraagVak.style.display = "block";
 }
 
